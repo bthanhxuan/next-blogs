@@ -11,21 +11,23 @@ type ButtonType = {
   htmlType?: "button" | "submit" | "reset" | undefined,
   className?: string,
   children?: string,
-  restProps?: Record<string, any>
   [key: string]: any,
 }
 
-function Button({
-  type = 'default',
-  loading,
-  loadingPos = 'left',
-  size,
-  as = 'button',
-  htmlType,
-  className,
-  children,
-  ...restProps
-}: ButtonType) {
+function Button(props: ButtonType) {
+
+  const {
+    type,
+    loading,
+    loadingPos,
+    size,
+    as,
+    htmlType,
+    className,
+    children,
+    ...restprops
+  } = props;
+
   const classes = cls(
     styles['btn'],
     {
@@ -48,7 +50,7 @@ function Button({
   const injectedProps = {
     className: classes,
     type: htmlType,
-    ...restProps,
+    ...restprops,
   };
 
   if (as === 'a') {
@@ -65,7 +67,7 @@ Button.defaultProps = {
   size: '',
   as: 'button',
   htmlType: 'button',
-  restProps: {}
+  restprops: {}
 }
 
 export default Button;

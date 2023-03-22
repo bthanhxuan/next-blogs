@@ -10,7 +10,10 @@ type MainTitleType = {
   [key: string]: any,
 }
 
-function MainTitle({ children, btnLabel, type = '', btnProps = {} }: MainTitleType) {
+function MainTitle(props: MainTitleType) {
+
+  const { children, btnLabel, type = '', btnProps = {} } = props;
+
   const classes = cls(`${styles['main-title']} spacing`, {
     [styles['main-title__search']]: type === 'search',
     'd-flex tcl-jc-between tcl-ais-center': btnLabel,

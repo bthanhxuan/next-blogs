@@ -8,17 +8,17 @@ type InputType = {
   type: string,
   className?: string,
   icon: ReactElement,
-  restProps?: Record<string, any>,
   [key: string]: any,
 }
 
-function Input({
-  label,
-  type,
-  className,
-  icon,
-  ...restProps
-}: InputType) {
+function Input(props: InputType) {
+  const {
+    label,
+    type,
+    className,
+    icon,
+    ...restprops
+  } = props;
   const [localType, setLocalType] = useState(type);
 
   function handleToggleShowPwd() {
@@ -39,7 +39,7 @@ function Input({
     return (
       <div className={styles["input-search"]}>
         {icon}
-        <input className={classesSearch} type={localType} {...restProps} />
+        <input className={classesSearch} type={localType} {...restprops} />
       </div>
     );
   }
@@ -50,7 +50,7 @@ function Input({
       {type === 'password' && (
         <i className={classesIconPwd} onClick={handleToggleShowPwd}></i>
       )}
-      <input type={localType} className={className} {...restProps} />
+      <input type={localType} className={className} {...restprops} />
     </div>
   );
 }
@@ -58,7 +58,6 @@ function Input({
 Input.defaultProps = {
   type: 'text',
   icon: <IconSearch />,
-  restProps: {},
 }
 
 export default Input;
