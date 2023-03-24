@@ -5,9 +5,9 @@ import styles from './Input.module.css';
 
 type InputType = {
   label?: string,
-  type: string,
+  type?: string,
   className?: string,
-  icon: ReactElement,
+  icon?: ReactElement,
   [key: string]: any,
 }
 
