@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import styles from './Login.module.css';
+import { useGlobalState } from '@/state';
+import { useAuthentication } from '@/helpers/useAuthentication';
 
 type FormLogin = {
   username: string,
@@ -20,17 +22,23 @@ const initFormData: FormLogin = {
 }
 
 function LoginPage() {
+  useAuthentication();
   const router = useRouter();
   const [formData, setFormData] = useState(initFormData);
-
-  const errorStr = router.query.error;
+  const [userInfo] = useGlobalState('currentUser');
 
   useEffect(() => {
-    if (errorStr) {
-      alert('Đăng nhập thất bại!');
-      window.history.pushState({}, document.title, "/login");
-    }
-  }, [errorStr])
+    // console.log("userInfo Login", userInfo);
+  }, [userInfo])
+
+  // const errorStr = router.query.error;
+
+  // useEffect(() => {
+  //   if (errorStr) {
+  //     alert('Đăng nhập thất bại!');
+  //     window.history.pushState({}, document.title, "/login");
+  //   }
+  // }, [errorStr])
 
 
   function handleOnChange(evt: any) {
@@ -62,17 +70,17 @@ function LoginPage() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log("data = ", data);
+        // console.log("data = ", data);
         // Cookies.set("token", data.token, { expires: 30 });
-        // router.push('/');
+        router.push('/');
       })
   }
 
-  function handleSubmitForm(e: any) {
-    e.preventDefault();
-    const formEl = e.target;
-    formEl.submit();
-  }
+  // function handleSubmitForm(e: any) {
+  //   e.preventDefault();
+  //   const formEl = e.target;
+  //   formEl.submit();
+  // }
 
   return (
     <main className="login">
@@ -82,18 +90,18 @@ function LoginPage() {
           <div className="tcl-col-12 tcl-col-sm-6 block-center">
             <h1 className={`${styles["form-title"]} text-center`}>Đăng nhập</h1>
             <div className={styles["form-login-register"]}>
-              {/* <form onSubmit={handleSubmit}> */}
-              <form action='/api/login' method='POST' onSubmit={handleSubmitForm}>
+              <form onSubmit={handleSubmit}>
+                {/* <form action='/api/login' method='POST' onSubmit={handleSubmitForm}> */}
                 <Input
-                  // value={formData.username}
-                  // onChange={handleOnChange}
+                  value={formData.username}
+                  onChange={handleOnChange}
                   name="username"
                   label="Tên đăng nhập"
                   placeholder="Nhập tên đăng nhập ..."
                   autoComplete="off" />
                 <Input
-                  // value={formData.password}
-                  // onChange={handleOnChange}
+                  value={formData.password}
+                  onChange={handleOnChange}
                   type="password"
                   name="password"
                   label="Mật khẩu"

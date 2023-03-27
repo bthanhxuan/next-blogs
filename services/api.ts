@@ -3,7 +3,8 @@ import { BASE_URL } from "@/constants";
 
 type ConfigType = {
   data?: any,
-  method?: string
+  method?: string,
+  token?: string,
 }
 
 const API = {
@@ -13,6 +14,17 @@ const API = {
       method,
       headers: {
         "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    }
+    return fetch(URL, config).then(res => res.json())
+  },
+  callWithToken: async (url: string, {data, method = 'GET', token}: ConfigType = {}) => {
+    const URL = `${BASE_URL}${url}`;
+    const config = {
+      method,
+      headers: {
+        "Authorization": 'Bearer ' + token
       },
       body: JSON.stringify(data)
     }
