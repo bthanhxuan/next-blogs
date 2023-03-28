@@ -26,6 +26,7 @@ function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState(initFormData);
   const [userInfo] = useGlobalState('currentUser');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // console.log("userInfo Login", userInfo);
@@ -57,6 +58,7 @@ function LoginPage() {
     //   .then(data => {
     //     console.log(data);
     //   })
+    setLoading(true);
 
     const body = JSON.stringify(formData);
     const method = "POST";
@@ -110,7 +112,7 @@ function LoginPage() {
                 />
 
                 <div className="d-flex tcl-jc-between tcl-ais-center">
-                  <Button type="primary" size="large" htmlType='submit'>
+                  <Button type="primary" size="large" htmlType='submit' loading={loading}>
                     Đăng nhập
                   </Button>
                   <Link href="/register">Đăng ký</Link>
