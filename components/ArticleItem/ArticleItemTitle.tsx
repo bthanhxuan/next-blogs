@@ -1,10 +1,16 @@
 import Link from 'next/link';
+import { PropsType } from './ArticleItem';
 import styles from './ArticleItem.module.css';
 
-export default function ArticleItemTitle() {
+const ArticleItemTitle: React.FC<PropsType> = ({ post }) => {
+  const title = post.title.rendered;
+  const slug = post.slug;
+
   return (
     <h2 className={styles["article-item__title"]}>
-      <Link href="post/only-someone-who's-seen-the-mummy-will-pass-this/">Only Someone Who's Seen The Mummy Will Pass This</Link>
+      <Link href={`post/${slug}`}>{title}</Link>
     </h2>
   );
 }
+
+export default ArticleItemTitle;

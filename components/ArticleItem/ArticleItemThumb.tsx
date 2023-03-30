@@ -1,11 +1,18 @@
+import Link from 'next/link';
+import { PropsType } from './ArticleItem';
 import styles from './ArticleItem.module.css';
 
-export default function ArticleItemThumb() {
+const ArticleItemThumb: React.FC<PropsType> = ({ post }) => {
+  const thumb = post.featured_media_url;
+  const title = post.title.rendered;
+
   return (
     <div className={styles["article-item__thumbnail"]}>
-      <a href="/">
-        <img src="/assets/images/blog-1.jpg" alt="assets/images/blog-1.jpg" />
-      </a>
+      <Link href="/post/[postId]" as={`/post/${post.id}`}>
+        <img src={thumb} alt={title} />
+      </Link>
     </div>
   );
 }
+
+export default ArticleItemThumb;

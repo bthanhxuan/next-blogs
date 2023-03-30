@@ -1,8 +1,13 @@
+import { PostType } from '@/pages';
 import { ArticleItem } from '../ArticleItem';
 import { Button } from '../shared/Button';
 import { MainTitle } from '../shared/MainTitle';
 
-function ArticleGeneral() {
+type PropsType = {
+  listPosts: PostType[],
+}
+
+const ArticleGeneral: React.FC<PropsType> = ({ listPosts }) => {
   return (
     <div className="articles-list section">
       <div className="tcl-container">
@@ -11,18 +16,11 @@ function ArticleGeneral() {
         {/* End Main Title */}
         {/* End Row News List */}
         <div className="tcl-row">
-          <div className="tcl-col-12 tcl-col-md-6">
-            <ArticleItem isStyleCard isShowAvatar={false} />
-          </div>
-          <div className="tcl-col-12 tcl-col-md-6">
-            <ArticleItem isStyleCard isShowAvatar={false} />
-          </div>
-          <div className="tcl-col-12 tcl-col-md-6">
-            <ArticleItem isStyleCard isShowAvatar={false} />
-          </div>
-          <div className="tcl-col-12 tcl-col-md-6">
-            <ArticleItem isStyleCard isShowAvatar={false} />
-          </div>
+          {listPosts.map((post) => (
+            <div key={post.id} className="tcl-col-12 tcl-col-md-6">
+              <ArticleItem isStyleCard isShowAvatar={false} post={post} />
+            </div>
+          ))}
         </div>
         {/* End Row News List */}
         <div className="text-center">

@@ -1,9 +1,15 @@
+import { PropsType } from './ArticleItem';
 import styles from './ArticleItem.module.css';
 
-export default function ArticleItemDesc() {
+const ArticleItemDesc: React.FC<PropsType> = ({ post }) => {
+  let customizeDesc = post.excerpt.rendered.replace('<p>', '');
+  customizeDesc = customizeDesc.replace('</p>', '');
+  customizeDesc = customizeDesc.split(' ').slice(0, 20).join(' ') + '...';
   return (
     <p className={styles["article-item__desc"]}>
-      Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to…
+      {customizeDesc}
     </p>
   );
 }
+
+export default ArticleItemDesc;
