@@ -43,3 +43,15 @@ export const getTokenSSRAndCSR = (ctx?: NextPageContext): [string, UserTokenType
 
   return [token, userToken];
 }
+
+// export function mappingMenuData(menu: any) {
+//   const childItemsData = menu?.child_items || [];
+//   const childItems = childItemsData.map(mappingMenuData);
+
+//   return {
+//     id: menu.ID,
+//     name: menu.title,
+//     linkURL: menu.url,
+//     childItems,
+//   };
+// }

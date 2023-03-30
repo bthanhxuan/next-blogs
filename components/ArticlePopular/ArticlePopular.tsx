@@ -13,7 +13,7 @@ const ArticlePopular: React.FC<PropsType> = ({ listPosts }) => {
     <div className="popular-news section bg-white-blue">
       <div className="tcl-container">
         {/* Main Title */}
-        <MainTitle btnLabel="Xem them">Bai Viet Pho Bien</MainTitle>
+        <MainTitle btnLabel="Xem thêm">Bài viết phổ biến</MainTitle>
         {/* End Main Title */}
         <div className={`${styles["popular-news__list"]} spacing`}>
           <div className={styles["popular-news__list--left"]}>

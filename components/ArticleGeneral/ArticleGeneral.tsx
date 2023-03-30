@@ -12,7 +12,7 @@ const ArticleGeneral: React.FC<PropsType> = ({ listPosts }) => {
     <div className="articles-list section">
       <div className="tcl-container">
         {/* Main Title */}
-        <MainTitle btnLabel="Xem them">Bai Viet Tong Hop</MainTitle>
+        <MainTitle btnLabel="Xem thêm">Bài viết tổng hợp</MainTitle>
         {/* End Main Title */}
         {/* End Row News List */}
         <div className="tcl-row">
