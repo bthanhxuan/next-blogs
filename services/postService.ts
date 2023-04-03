@@ -7,22 +7,28 @@ import API from "./api";
 // }
 
 const postService = {
-  getAll: async (inputParams = {}) => {
-    return API.call('/wp/v2/posts', {
-      params: {
-        ...inputParams,
-        lang: 'vi',
-      },
-    });
+  // getAll: async (inputParams = {}) => {
+  //   return API.call('/wp/v2/posts', {
+  //     params: {
+  //       ...inputParams,
+  //       lang: 'vi',
+  //     },
+  //   });
+  // },
+  getArticlesLatest: async ({per_page = 3, page = 1, lang = "vi"} = {}) => {
+    const param = `per_page=${per_page}&page=${page}&lang=${lang}`
+    const url = `/wp/v2/posts?${param}`;
+    return API.call(url);
   },
-  getArticlesLatest() {
-    return this.getAll({ per_page: 3, page: 1 });
+  getArticlesPopular({per_page = 3, page = 1, lang = "vi", orderby = "post-views"} = {}) {
+    const param = `per_page=${per_page}&page=${page}&lang=${lang}?orderby=${orderby}`
+    const url = `/wp/v2/posts?${param}`;
+    return API.call(url);
   },
-  getArticlesPopular() {
-    return this.getAll({ per_page: 3, page: 1, orderby: 'post-views' });
-  },
-  getArticlesGeneral(page = 1) {
-    return this.getAll({ per_page: 2, page });
+  getArticlesGeneral({per_page = 2, page = 1, lang = "vi"} = {}) {
+     const param = `per_page=${per_page}&page=${page}&lang=${lang}`
+    const url = `/wp/v2/posts?${param}`;
+    return API.call(url);
   },
 }
 

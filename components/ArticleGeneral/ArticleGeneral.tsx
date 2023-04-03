@@ -1,4 +1,6 @@
 import { PostType } from '@/pages';
+import postService from '@/services/postService';
+import { useState } from 'react';
 import { ArticleItem } from '../ArticleItem';
 import { Button } from '../shared/Button';
 import { MainTitle } from '../shared/MainTitle';
@@ -7,7 +9,28 @@ type PropsType = {
   listPosts: PostType[],
 }
 
-const ArticleGeneral: React.FC<PropsType> = ({ listPosts }) => {
+const ArticleGeneral: React.FC<PropsType> = (props) => {
+
+  const [currPage, setCurrPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [listPosts, setListPosts] = useState(props.listPosts);
+
+  function handleLoadmore() {
+    if (loading) return;
+    setLoading(true);
+    postService
+      .getArticlesGeneral({ per_page: 2, page: currPage + 1 })
+      .then(resData => {
+        const newPosts = resData || [];
+        setListPosts([
+          ...listPosts,
+          ...newPosts,
+        ])
+        setCurrPage(prev => prev + 1);
+      })
+      .finally(() => setLoading(false));
+  }
+
   return (
     <div className="articles-list section">
       <div className="tcl-container">
@@ -24,7 +47,7 @@ const ArticleGeneral: React.FC<PropsType> = ({ listPosts }) => {
         </div>
         {/* End Row News List */}
         <div className="text-center">
-          <Button type="primary" size="large" loading={false}>
+          <Button type="primary" size="large" loading={loading} onClick={handleLoadmore}>
             Tải thêm
           </Button>
         </div>

@@ -33,9 +33,9 @@ type HomePropsType = React.FC<InferGetServerSidePropsType<typeof getServerSidePr
 
 const Home: HomePropsType = ({ listPostsLatest, listPostsPopular, listPostsGeneral }) => {
 
-  useEffect(() => {
-    console.log('listPostLatest', listPostsLatest);
-  }, [])
+  // useEffect(() => {
+  //   console.log('listPostLatest', listPostsLatest);
+  // }, [])
 
   return (
     <>
