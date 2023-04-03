@@ -5,6 +5,7 @@ type ConfigType = {
   data?: any,
   method?: string,
   token?: string,
+  params?: any,
 }
 
 const API = {

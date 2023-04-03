@@ -17,7 +17,7 @@ const ArticleGeneral: React.FC<PropsType> = ({ listPosts }) => {
         {/* End Row News List */}
         <div className="tcl-row">
           {listPosts.map((post) => (
-            <div key={post.id} className="tcl-col-12 tcl-col-md-6">
+            <div key={post.id} className="tcl-col-12 tcl-col-md-6" style={{ marginBottom: '15px' }}>
               <ArticleItem isStyleCard isShowAvatar={false} post={post} />
             </div>
           ))}

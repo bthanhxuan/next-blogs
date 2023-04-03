@@ -24,37 +24,42 @@ export type PostType = {
 }
 
 type HomeDataProps = {
-  listPosts: PostType[],
+  listPostsLatest: PostType[],
+  listPostsPopular: PostType[],
+  listPostsGeneral: PostType[],
 }
 
 type HomePropsType = React.FC<InferGetServerSidePropsType<typeof getServerSideProps>>;
 
-const Home: HomePropsType = ({ listPosts }) => {
+const Home: HomePropsType = ({ listPostsLatest, listPostsPopular, listPostsGeneral }) => {
 
-  // useEffect(() => {
-  //   console.log("listPosts: ", listPosts);
-  // }, [])
+  useEffect(() => {
+    console.log('listPostLatest', listPostsLatest);
+  }, [])
 
   return (
     <>
-      <ArticleLatest listPosts={listPosts} />
-      <ArticlePopular listPosts={listPosts} />
-      <ArticleGeneral listPosts={listPosts} />
+      <ArticleLatest listPosts={listPostsLatest} />
+      <ArticlePopular listPosts={listPostsPopular} />
+      <ArticleGeneral listPosts={listPostsGeneral} />
     </>
   )
 }
 
 export const getServerSideProps: GetServerSideProps<HomeDataProps> = async (context) => {
 
-  const listPostsRes = await postService.getPosts();
-  // console.log("listPostsRes: ", listPostsRes);
-  // const props = {
-  //   listPosts: [],
-  // }
+  const listPostsArticleLatest = postService.getArticlesLatest();
+  const listPostsArticlePopular = postService.getArticlesPopular();
+  const listPostsArticleGeneral = postService.getArticlesGeneral();
+
+  const [dataPostsArticelLatestRes, dataPostsArticlePopularRes, dataPostsArticleGeneralRes]
+    = await Promise.all([listPostsArticleLatest, listPostsArticlePopular, listPostsArticleGeneral]);
 
   return {
     props: {
-      listPosts: listPostsRes || [],
+      listPostsLatest: dataPostsArticelLatestRes || [],
+      listPostsPopular: dataPostsArticlePopularRes || [],
+      listPostsGeneral: dataPostsArticleGeneralRes || [],
     },
   }
 }
