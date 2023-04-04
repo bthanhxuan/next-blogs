@@ -17,6 +17,8 @@ export type PropsType = {
   isShowDesc?: boolean,
   isShowCategoies?: boolean,
   isShowAvatar?: boolean,
+  isHighLight?: boolean,
+  query?: string,
 }
 
 const ArticleItem: React.FC<PropsType> = ({
@@ -26,6 +28,8 @@ const ArticleItem: React.FC<PropsType> = ({
   isShowCategoies = false,
   isShowAvatar = true,
   post,
+  isHighLight,
+  query
 }) => {
   if (!post) return <></>;
 
@@ -52,7 +56,7 @@ const ArticleItem: React.FC<PropsType> = ({
         {isShowCategoies && <ArticleItemCategories />}
         {isShowCategoies && <ArticleItemStats />}
 
-        <ArticleItemTitle post={post} />
+        <ArticleItemTitle post={post} isHighLight={isHighLight} query={query} />
 
         {isShowDesc && <ArticleItemDesc post={post} />}
 

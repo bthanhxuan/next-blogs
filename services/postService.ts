@@ -30,6 +30,9 @@ const postService = {
     const url = `/wp/v2/posts?${param}`;
     return API.call(url);
   },
+  getPostSearch: async ({keyword}: any) => {
+    return API.call(`/wp/v2/posts?per_page=3&page=1&search=${encodeURI(keyword)}&lang=vi`)
+  }
 }
 
 export default postService;
