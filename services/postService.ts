@@ -32,6 +32,11 @@ const postService = {
   },
   getPostSearch: async ({keyword}: any) => {
     return API.call(`/wp/v2/posts?per_page=3&page=1&search=${encodeURI(keyword)}&lang=vi`)
+  },
+  getCategories: async ({per_page = 100, page = 1, lang = "vi"} = {}) => {
+    const param = `per_page=${per_page}&page=${page}&lang=${lang}`
+    const url = `/wp/v2/categories?${param}`;
+    return API.call(url);
   }
 }
 

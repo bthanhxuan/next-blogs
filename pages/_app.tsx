@@ -2,6 +2,7 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { getTokenSSRAndCSR } from '@/helpers';
 import menuService from '@/services/menuService';
+import postService from '@/services/postService';
 import userService from '@/services/userService';
 import { useGlobalState } from '@/state';
 import es6Promise from 'es6-promise';
@@ -17,11 +18,13 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   const [token, setToken] = useGlobalState('token');
   const [currentUser, serCurrentUser] = useGlobalState('currentUser');
   const [menus, setMenus] = useGlobalState('menus');
+  const [categories, setCategories] = useGlobalState('categories');
 
   useMemo(() => {
     setToken(pageProps.token)
     serCurrentUser(pageProps.userInfo)
     setMenus(pageProps.menus)
+    setCategories(pageProps.categories)
   }, [])
 
   return (
@@ -48,6 +51,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
 
   let userPos = null;
   let menuPos = null;
+  let categoriesPos = null;
 
   const [token, userToken] = getTokenSSRAndCSR(appContext.ctx);
 
@@ -61,15 +65,17 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
       userPos = userService.getUser(token);
     }
     menuPos = menuService.getMenu();
+    categoriesPos = postService.getCategories();
   }
 
-  const [userRes, menuRes] = await Promise.all([userPos, menuPos]);
+  const [userRes, menuRes, categoriesRes] = await Promise.all([userPos, menuPos, categoriesPos]);
 
   return {
     pageProps: {
       ...appProps.pageProps,
       token,
       menus: menuRes?.items || [],
+      categories: categoriesRes || [],
       userInfo: userRes || null,
     },
   };

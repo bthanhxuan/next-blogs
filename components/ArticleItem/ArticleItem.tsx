@@ -53,7 +53,7 @@ const ArticleItem: React.FC<PropsType> = ({
     <article className={classes}>
       <ArticleItemThumb post={post} />
       <div className={styles["article-item__content"]}>
-        {isShowCategoies && <ArticleItemCategories />}
+        {isShowCategoies && <ArticleItemCategories categories={categories} />}
         {isShowCategoies && <ArticleItemStats />}
 
         <ArticleItemTitle post={post} isHighLight={isHighLight} query={query} />

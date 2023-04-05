@@ -19,15 +19,23 @@ type MenuType = {
   child_items: string,
 }
 
+type CategoriesType = {
+  id: number,
+  name: string,
+  slug: string,
+}
+
 type TypeInitState = {
   token?: string,
   menus: MenuType[],
+  categories: CategoriesType[],
   currentUser: CurrentUserType | null,
 }
 
 const initialState: TypeInitState = {
   token: '',
   menus: [],
+  categories: [],
   currentUser: null,
 }
 

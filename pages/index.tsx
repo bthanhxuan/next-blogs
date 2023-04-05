@@ -16,7 +16,7 @@ export type PostType = {
   author_data: any,
   authorAvatar: any | null,
   excerpt: any,
-  categories: string,
+  categories: any,
   slug: string,
   view_count: string | null,
   comment_count: string | null,
