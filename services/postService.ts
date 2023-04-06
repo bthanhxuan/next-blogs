@@ -20,8 +20,8 @@ const postService = {
     const url = `/wp/v2/posts?${param}`;
     return API.call(url);
   },
-  getArticlesPopular({per_page = 3, page = 1, lang = "vi"} = {}) {
-    const param = `per_page=${per_page}&page=${page}&lang=${lang}`
+  getArticlesPopular({per_page = 3, page = 1, lang = "vi", orderby="post-views"} = {}) {
+    const param = `per_page=${per_page}&page=${page}&lang=${lang}&orderby=${orderby}`
     const url = `/wp/v2/posts?${param}`;
     return API.call(url);
   },
