@@ -59,7 +59,7 @@ export default async (
     
 
       res.statusCode = 200;
-      // res.setHeader('Location', '/');s
+      // res.setHeader('Location', '/');
       res.setHeader('Content-Type', "application/json");
       res.setHeader('Set-Cookie', `token=${resServer.token}; expires=${nextYear.toUTCString()}; Path=/`); 
       res.json(resServer);

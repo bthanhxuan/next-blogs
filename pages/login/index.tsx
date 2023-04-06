@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import styles from './Login.module.css';
 import { useGlobalState } from '@/state';
 import { useAuthentication } from '@/helpers/useAuthentication';
+import userService from '@/services/userService';
 
 type FormLogin = {
   username: string,
@@ -25,7 +26,7 @@ function LoginPage() {
   useAuthentication();
   const router = useRouter();
   const [formData, setFormData] = useState(initFormData);
-  const [userInfo] = useGlobalState('currentUser');
+  const [userInfo, setUserInfo] = useGlobalState('currentUser');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -75,6 +76,7 @@ function LoginPage() {
         // console.log("data = ", data);
         // Cookies.set("token", data.token, { expires: 30 });
         router.push('/');
+
       })
   }
 

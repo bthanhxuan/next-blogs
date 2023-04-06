@@ -6,10 +6,11 @@ import postService from '@/services/postService';
 import userService from '@/services/userService';
 import { useGlobalState } from '@/state';
 import es6Promise from 'es6-promise';
+import Cookies from 'js-cookie';
 import type { AppContext, AppProps } from 'next/app';
 import App from "next/app";
 import Head from 'next/head';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 es6Promise.polyfill();
 
@@ -26,6 +27,19 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     setMenus(pageProps.menus)
     setCategories(pageProps.categories)
   }, [])
+
+  const tokenFetchMe = Cookies.get('token') as string;
+  // console.log("tokenFetchMe", tokenFetchMe);
+
+  useEffect(() => {
+    userService.getUser(tokenFetchMe)
+      .then(data => {
+        // console.log("data", data);
+        if (data.id) {
+          serCurrentUser(data);
+        }
+      })
+  }, [tokenFetchMe])
 
   return (
     <>
@@ -58,6 +72,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   // if (typeof window === 'undefined' && userToken) {
   //   userRes = await userService.getUser(token);
   // }
+  // console.log('test');
 
   if (typeof window === 'undefined') {
 
