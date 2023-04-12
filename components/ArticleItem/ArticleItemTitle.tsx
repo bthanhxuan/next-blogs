@@ -16,7 +16,7 @@ const ArticleItemTitle: React.FC<PropsType> = ({ post, isHighLight, query }) => 
 
   return (
     <h2 className={styles["article-item__title"]}>
-      <Link href={`post/${slug}`} dangerouslySetInnerHTML={{ __html: renderHighLight() }} />
+      <Link href="/post/[slug]" as={`/post/${slug}`} dangerouslySetInnerHTML={{ __html: renderHighLight() }} />
     </h2>
   );
 }

@@ -1,25 +1,27 @@
 import styles from './PostDetail.module.css';
 
-function PostDetailHead() {
+function PostDetailHead({postDetail}: any) {
+  // console.log('postDatail:', postDetail);
+
   return (
     <div className={styles["post-detail__head"]}>
       <div className="tcl-container">
         <h1 className={styles["post-detail__title"]}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry
+          {postDetail?.title?.rendered}
         </h1>
         <ul className={styles["post-detail__info"]}>
           <li className="item author">
             By{' '}
             <a href="/">
-              <strong>John Smith</strong>
+              <strong>{postDetail?.author_data?.nickname}</strong>
             </a>
           </li>
-          <li className="item date">May 15, 2021</li>
+          <li className="item date">{postDetail?.date}</li>
           <li className="item views">
-            2 <i className="icons ion-ios-eye" />
+            {postDetail?.view_count} <i className="icons ion-ios-eye" />
           </li>
           <li className="item comments">
-            20 <i className="icons ion-ios-chatbubble" />
+            {postDetail?.comment_count} <i className="icons ion-ios-chatbubble" />
           </li>
         </ul>
       </div>

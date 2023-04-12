@@ -26,7 +26,7 @@ const postService = {
     return API.call(url);
   },
   getArticlesGeneral({per_page = 2, page = 1, lang = "vi"} = {}) {
-     const param = `per_page=${per_page}&page=${page}&lang=${lang}`
+    const param = `per_page=${per_page}&page=${page}&lang=${lang}`
     const url = `/wp/v2/posts?${param}`;
     return API.call(url);
   },
@@ -37,6 +37,12 @@ const postService = {
     const param = `per_page=${per_page}&page=${page}&lang=${lang}`
     const url = `/wp/v2/categories?${param}`;
     return API.call(url);
+  },
+  getPostDetail: async (slug: any) => {
+    return API.call(`/wp/v2/posts?slug=${slug}`);
+  },
+  getPostRelated: async (author: any, exclude: any) => {
+    return API.call(`/wp/v2/posts?per_page=3&page=1&author=${author}&lang=vi&exclude=${exclude}`);
   }
 }
 

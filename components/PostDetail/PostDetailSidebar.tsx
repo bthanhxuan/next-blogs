@@ -2,12 +2,12 @@ import styles from './PostDetail.module.css';
 import PostDetailAuthor from './PostDetailAuthor';
 import PostDetailRelatedPosts from './PostDetailRelatedPosts';
 
-function PostDetailSidebar() {
+function PostDetailSidebar({postDetail, postRelated}: any) {
   return (
     <div className={styles["post-detail__side"]}>
-      <PostDetailAuthor />
+      <PostDetailAuthor postDetail={postDetail}/>
       <div className="spacing" />
-      <PostDetailRelatedPosts />
+      <PostDetailRelatedPosts postRelated={postRelated}/>
     </div>
   );
 }
