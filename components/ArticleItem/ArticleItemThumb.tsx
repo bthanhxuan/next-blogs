@@ -3,6 +3,7 @@ import { PropsType } from './ArticleItem';
 import styles from './ArticleItem.module.css';
 
 const ArticleItemThumb: React.FC<PropsType> = ({ post }) => {
+  // console.log(post);
   const thumb = post.featured_media_url;
   const title = post.title.rendered;
 

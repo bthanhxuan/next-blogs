@@ -43,7 +43,12 @@ const postService = {
   },
   getPostRelated: async (author: any, exclude: any) => {
     return API.call(`/wp/v2/posts?per_page=3&page=1&author=${author}&lang=vi&exclude=${exclude}`);
-  }
+  },
+  getPostsByCategory: async ({per_page = 3, page = 1, categories = 1} = {}) => {
+    const param = `per_page=${per_page}&page=${page}&categories=${categories}`;
+    const url = `/wp/v2/posts?${param}`;
+    return API.call(url);
+  },
 }
 
 export default postService;
