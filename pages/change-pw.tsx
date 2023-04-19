@@ -37,7 +37,8 @@ const ChangePasswordPage = () => {
           alert("Thay đổi mật khẩu thành công!");
           setFormData(initState);
         } else {
-          alert(res.message);
+          // alert(res.message);
+          alert("Updata Failed!");
         }
       })
     
