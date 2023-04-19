@@ -7,6 +7,12 @@ type RegisterDataType = {
   password: string
 }
 
+type PasswordDataType = {
+  password: string,
+  new_password: string,
+  confirm_new_password: string,
+}
+
 const userService = {
   getUser : async (token: string) => {
     return API.callWithToken('/wp/v2/users/me' ,{token})
@@ -15,6 +21,13 @@ const userService = {
     return API.call('/wp/v2/users/register', {
       data,
       method: 'POST',
+    })
+  },
+  changePassword: async (data: PasswordDataType, token: any) => {
+    return API.callWithToken('/wp/v2/users/password', {
+      data,
+      token,
+      method: "PUT",
     })
   }
 }

@@ -43,50 +43,6 @@ function HeaderMenus() {
         <ul className={styles["header-nav__lists"]}>
           {renderMenus(menus)}
         </ul>
-        {/* <ul className={styles["header-nav__lists"]}>
-          <li>
-            <a href="/">Home</a>
-          </li>
-          <li>
-            <a href="/">Our Team</a>
-            <ul>
-              <li>
-                <a href="/">Our Team 1</a>
-              </li>
-              <li>
-                <a href="/">Our Team 2</a>
-              </li>
-              <li>
-                <a href="/">Our Team 3</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href="/">Contact</a>
-            <ul>
-              <li>
-                <a href="/">Contact 1</a>
-              </li>
-              <li>
-                <a href="/">Contact 2</a>
-              </li>
-              <li>
-                <a href="/">Contact 3</a>
-                <ul>
-                  <li>
-                    <a href="/">Contact 11</a>
-                  </li>
-                  <li>
-                    <a href="/">Contact 12</a>
-                  </li>
-                  <li>
-                    <a href="/">Contact 13</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul> */}
         <ul className={styles["header-nav__lists"]}>
           {!userInfo && (
             <li className="user">
@@ -102,7 +58,7 @@ function HeaderMenus() {
               </Link>
               <ul>
                 <li>
-                  <Link href="/update-profile">Update Profile</Link>
+                  <Link href="/profile">Update Profile</Link>
                 </li>
                 <li>
                   <Link href="/change-pw">Change Password</Link>
