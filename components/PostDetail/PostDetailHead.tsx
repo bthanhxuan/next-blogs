@@ -10,17 +10,17 @@ function PostDetailHead({postDetail}: any) {
           {postDetail?.title?.rendered}
         </h1>
         <ul className={styles["post-detail__info"]}>
-          <li className="item author">
+          <li className={styles["item"] + " author"}>
             By{' '}
             <a href="/">
               <strong>{postDetail?.author_data?.nickname}</strong>
             </a>
           </li>
-          <li className="item date">{postDetail?.date}</li>
-          <li className="item views">
+          <li className={styles["item"] + " date"}>{postDetail?.date}</li>
+          <li className={styles["item"] + " views"}>
             {postDetail?.view_count} <i className="icons ion-ios-eye" />
           </li>
-          <li className="item comments">
+          <li className={styles["item"] + " comments"}>
             {postDetail?.comment_count} <i className="icons ion-ios-chatbubble" />
           </li>
         </ul>
