@@ -7,6 +7,12 @@ type ConfigType = {
   token?: string,
 }
 
+type ConfigFormType = {
+  data: FormData,
+  method?: string,
+  token: string,
+}
+
 const API = {
   call: async (url: string, {data, method = 'GET'}: ConfigType = {}) => {
     const URL = `${BASE_URL}${url}`;
@@ -27,6 +33,17 @@ const API = {
         "Authorization": 'Bearer ' + token
       },
       body: JSON.stringify(data)
+    }
+    return fetch(URL, config).then(res => res.json())
+  },
+  callFormData: async (url: string, {data, method = "POST", token}: ConfigFormType) => {
+    const URL = `${BASE_URL}${url}`;
+    const config = {
+      method,
+      headers: {
+        "Authorization": `Bearer ${token}`
+      },
+      body: data,
     }
     return fetch(URL, config).then(res => res.json())
   }

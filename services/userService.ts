@@ -13,6 +13,10 @@ type PasswordDataType = {
   confirm_new_password: string,
 }
 
+type ProfileDataType = {
+  file: File | null,
+}
+
 const userService = {
   getUser : async (token: string) => {
     return API.callWithToken('/wp/v2/users/me' ,{token})
@@ -28,6 +32,16 @@ const userService = {
       data,
       token,
       method: "PUT",
+    })
+  },
+  uploadMediaFile: async (profileData: ProfileDataType, token: any) => {
+    const data = new FormData();
+    if(profileData.file) {
+      data.append('file', profileData.file);
+    }
+    return API.callFormData('/wp/v2/media', {
+      data,
+      token
     })
   }
 }
