@@ -17,8 +17,13 @@ type ProfileDataType = {
   file: File | null,
 }
 
+type UpdateProfileType = {
+  description?: string,
+  mediaId: number
+}
+
 const userService = {
-  getUser : async (token: string) => {
+  getUser : async (token: any) => {
     return API.callWithToken('/wp/v2/users/me' ,{token})
   },
   register : async (data: RegisterDataType) => {
@@ -42,6 +47,18 @@ const userService = {
     return API.callFormData('/wp/v2/media', {
       data,
       token
+    })
+  },
+  updateProfile: async ({description, mediaId}: UpdateProfileType, token: any) => {
+    return API.callWithToken('/wp/v2/users/me', {
+      data: {
+        description,
+        simple_local_avatar: {
+          media_id: mediaId
+        },
+      },
+      token,
+      method: "PUT",
     })
   }
 }

@@ -17,13 +17,13 @@ es6Promise.polyfill();
 function MyApp({ Component, pageProps, router }: AppProps) {
 
   const [token, setToken] = useGlobalState('token');
-  const [currentUser, serCurrentUser] = useGlobalState('currentUser');
+  const [currentUser, setCurrentUser] = useGlobalState('currentUser');
   const [menus, setMenus] = useGlobalState('menus');
   const [categories, setCategories] = useGlobalState('categories');
 
   useMemo(() => {
     setToken(pageProps.token)
-    serCurrentUser(pageProps.userInfo)
+    setCurrentUser(pageProps.userInfo)
     setMenus(pageProps.menus)
     setCategories(pageProps.categories)
   }, [])
@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       .then(data => {
         // console.log("data", data);
         if (data.id) {
-          serCurrentUser(data);
+          setCurrentUser(data);
         }
       })
   }, [tokenFetchMe])
