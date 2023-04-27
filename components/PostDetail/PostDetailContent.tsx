@@ -5,6 +5,7 @@ import PostDetailRichText from './PostDetailRichText';
 import PostDetailTags from './PostDetailTags';
 
 function PostDetailContent({postDetail}: any) {
+  console.log('postDetail ', postDetail.categories);
 
   const contentHTML = postDetail?.content?.rendered; 
   const imgSrc = postDetail?.featured_media_url;
@@ -18,7 +19,7 @@ function PostDetailContent({postDetail}: any) {
       <div className={styles["content-padding"]}>
         <PostDetailRichText contentHTML={contentHTML}/>
 
-        <PostDetailTags />
+        <PostDetailTags tags={postDetail.categories}/>
 
         <PostDetailComments />
       </div>
