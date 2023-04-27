@@ -1,27 +1,37 @@
+import { useState } from 'react';
 import { Button } from '../shared/Button';
 import styles from './Comments.module.css';
 
-export default function CommentItem() {
+function CommentItem({comment}: any) {
+
+  // console.log('comment ', comment);
+  const [isShowForm, setIsShowForm] = useState(false);
+  function handleToogleCommentForm() {
+    setIsShowForm(!isShowForm);
+  }
+
   return (
     <li className={styles["item"]}>
       <div className={styles["comments__section"]}>
         <div className={styles["comments__section--avatar"]}>
           <a href="#">
-            <img src="/assets/images/avatar1.jpg" alt="" />
+            <img src={comment?.author_data?.avatar || "/assets/images/avatar1.jpg"} alt="" />
           </a>
         </div>
         <div className={styles["comments__section--content"]}>
           <a href="#" className={styles["comments__section--user"]}>
-            John Smith
+            {comment?.author_name}
           </a>
-          <p className={styles["comments__section--time"]}>2 minutes ago</p>
-          <p className={styles["comments__section--text"]}>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt
-            sequi odit exercitationem maiores, iusto unde quibusdam! Ullam nisi
-            iste reprehenderit, expedita nam ad. Nisi hic at voluptate sint
-            incidunt aut?
-          </p>
-          {/* <i class="ion-reply comments__section--reply"></i> */}
+          <p className={styles["comments__section--time"]}>{comment?.date}</p>
+          <div 
+            className={styles["comments__section--text"]}
+            dangerouslySetInnerHTML={{ __html: comment?.content?.rendered }}
+          >
+          </div>
+          <i
+            className={"ion-reply " + styles["comments__section--reply"]}
+            onClick={handleToogleCommentForm}
+          ></i>
         </div>
       </div>
       {/* Reply Comments */}
@@ -41,7 +51,7 @@ export default function CommentItem() {
               <p className={styles["comments__section--text"]}>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit?
               </p>
-              {/* <i class="ion-reply comments__section--reply"></i> */}
+              {/* <i className="ion-reply comments__section--reply"></i> */}
             </div>
           </div>
         </li>
@@ -61,7 +71,7 @@ export default function CommentItem() {
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                 Nesciunt sequi odit exercitationem ma?
               </p>
-              {/* <i class="ion-reply comments__section--reply"></i> */}
+              {/* <i className="ion-reply comments__section--reply"></i> */}
             </div>
           </div>
         </li>
@@ -83,3 +93,4 @@ export default function CommentItem() {
     </li>
   );
 }
+export default CommentItem;

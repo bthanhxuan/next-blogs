@@ -4,8 +4,9 @@ import PostDetailComments from './PostDetailComments';
 import PostDetailRichText from './PostDetailRichText';
 import PostDetailTags from './PostDetailTags';
 
-function PostDetailContent({postDetail}: any) {
-  console.log('postDetail ', postDetail.categories);
+function PostDetailContent({postDetail, comments}: any) {
+  // console.log('postDetail ', postDetail.id);
+  // console.log('comments ', comments);
 
   const contentHTML = postDetail?.content?.rendered; 
   const imgSrc = postDetail?.featured_media_url;
@@ -21,7 +22,7 @@ function PostDetailContent({postDetail}: any) {
 
         <PostDetailTags tags={postDetail.categories}/>
 
-        <PostDetailComments />
+        <PostDetailComments listComments={comments}/>
       </div>
     </div>
   );

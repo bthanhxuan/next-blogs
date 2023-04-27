@@ -2,19 +2,25 @@ import styles from './Comments.module.css';
 
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
+import { CommentType } from '@/pages/post/[slug]';
 
-function PostDetailComments() {
+type PropsType = {
+  listComments: CommentType[],
+}
+
+const PostDetailComments: React.FC<PropsType> = ({ listComments}) => {
   return (
     <div className={styles["post-detail__comments"]}>
       <CommentForm />
-      <p>20 Comments</p>
+      <p>{listComments?.length || 0} Comments</p>
       <ul className={styles["comments"]}>
-        {/* Comment 1 */}
-        <CommentItem />
-        {/* Comment 2 */}
-        <CommentItem />
-        {/* Comment 3 */}
-        <CommentItem />
+        {
+          listComments.map((comment : any) => {
+            return (
+              <CommentItem key={comment.id} comment={comment}/>
+            )
+          })
+        }
       </ul>
     </div>
   );
