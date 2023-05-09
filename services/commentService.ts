@@ -1,4 +1,11 @@
 import API from "./api";
+// type GetCommentsInput = {
+//   postId: number,
+//   exclude: number[],
+//   page: number,
+//   perPage?: number,
+//   commentId?: number
+// }
 
 const commentService =  {
   getListComment: async (postId: any) => {

@@ -24,6 +24,13 @@ const API = {
       body: JSON.stringify(data)
     }
     return fetch(URL, config).then(res => res.json())
+    // return fetch(URL, config).then(res => {
+    //   return {
+    //     total: res.headers.get('x-wp-total'),
+    //     totalPage: res.headers.get('x-wp-totalpages'),
+    //     data: res.json()
+    //   }
+    // })
   },
   callWithToken: async (url: string, {data, method = 'GET', token}: ConfigType = {}) => {
     const URL = `${BASE_URL}${url}`;

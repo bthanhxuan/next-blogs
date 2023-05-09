@@ -1,5 +1,11 @@
 import styles from './PostDetail.module.css';
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import viLocal from 'dayjs/locale/vi';
+
+dayjs.extend(relativeTime);
+
 function PostDetailHead({postDetail}: any) {
   // console.log('postDatail:', postDetail);
 
@@ -16,7 +22,7 @@ function PostDetailHead({postDetail}: any) {
               <strong>{postDetail?.author_data?.nickname}</strong>
             </a>
           </li>
-          <li className={styles["item"] + " date"}>{postDetail?.date}</li>
+          <li className={styles["item"] + " date"}>{dayjs(postDetail?.date).locale(viLocal).fromNow()}</li>
           <li className={styles["item"] + " views"}>
             {postDetail?.view_count} <i className="icons ion-ios-eye" />
           </li>

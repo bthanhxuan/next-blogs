@@ -1,11 +1,17 @@
 import { PropsType } from './ArticleItem';
 import styles from './ArticleItem.module.css';
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import viLocal from 'dayjs/locale/vi';
+
 import ArticleItemAvatar from './ArticleItemAvatar';
+
+dayjs.extend(relativeTime);
 
 const ArticleItemInfo: React.FC<PropsType> = ({ isShowAvatar, post }) => {
   const authorName = post.author_data.nickname;
-  const pubDate = post.date;
+  const pubDate = dayjs(post.date).locale(viLocal).fromNow();
 
   return (
     <div className={styles["article-item__info"]}>

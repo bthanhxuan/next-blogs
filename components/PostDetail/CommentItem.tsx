@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { Button } from '../shared/Button';
 import styles from './Comments.module.css';
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import viLocal from 'dayjs/locale/vi';
+
+dayjs.extend(relativeTime);
+
 function CommentItem({comment}: any) {
 
   // console.log('comment ', comment);
@@ -22,7 +28,7 @@ function CommentItem({comment}: any) {
           <a href="#" className={styles["comments__section--user"]}>
             {comment?.author_name}
           </a>
-          <p className={styles["comments__section--time"]}>{comment?.date}</p>
+          <p className={styles["comments__section--time"]}>{dayjs(comment?.date).locale(viLocal).fromNow()}</p>
           <div 
             className={styles["comments__section--text"]}
             dangerouslySetInnerHTML={{ __html: comment?.content?.rendered }}
