@@ -22,7 +22,7 @@ function PostDetailContent({postDetail, comments}: any) {
 
         <PostDetailTags tags={postDetail.categories}/>
 
-        <PostDetailComments listComments={comments}/>
+        <PostDetailComments comments={comments}/>
       </div>
     </div>
   );

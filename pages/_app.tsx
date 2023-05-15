@@ -1,6 +1,7 @@
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { getTokenSSRAndCSR } from '@/helpers';
+import categoryService from '@/services/categoryService';
 import menuService from '@/services/menuService';
 import postService from '@/services/postService';
 import userService from '@/services/userService';
@@ -79,19 +80,19 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     if (userToken) {
       userPos = userService.getUser(token);
     }
-    menuPos = menuService.getMenu();
-    categoriesPos = postService.getCategories();
   }
+  menuPos = menuService.getMenu();
+  categoriesPos = categoryService.getCategories();
 
-  const [userRes, menuRes, categoriesRes] = await Promise.all([userPos, menuPos, categoriesPos]);
+  const [userRes, menuRes, categoriesRes] = await Promise.all([userPos, (await menuPos).data, (await categoriesPos).data]);
 
   return {
     pageProps: {
       ...appProps.pageProps,
       token,
       menus: menuRes?.items || [],
-      categories: categoriesRes || [],
       userInfo: userRes || null,
+      categories: categoriesRes || [],
     },
   };
 };

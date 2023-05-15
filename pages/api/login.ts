@@ -51,18 +51,23 @@ export default async (
   // }
 
   try {
-    const resServer = await API.call('/jwt-auth/v1/token', { data, method })
+    const resServer = await API.callJson('/jwt-auth/v1/token', data, 'POST');
 
     const currentTime = new Date();
     const nextYear = new Date(currentTime.getFullYear() + 1, currentTime.getMonth());
     // console.log('resServer', resServer);
     
-
+    if(resServer.token) {
       res.statusCode = 200;
       // res.setHeader('Location', '/');
       res.setHeader('Content-Type', "application/json");
       res.setHeader('Set-Cookie', `token=${resServer.token}; expires=${nextYear.toUTCString()}; Path=/`); 
       res.json(resServer);
+    } else {
+      res.statusCode = 200;
+      console.log(resServer);
+      res.json(resServer);
+    }
   } catch (e:any) {
     res.statusCode = 200;
     res.json({

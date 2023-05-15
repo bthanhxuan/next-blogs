@@ -33,16 +33,11 @@ const postService = {
   getPostSearch: async ({keyword}: any) => {
     return API.call(`/wp/v2/posts?per_page=3&page=1&search=${encodeURI(keyword)}&lang=vi`)
   },
-  getCategories: async ({per_page = 100, page = 1, lang = "vi"} = {}) => {
-    const param = `per_page=${per_page}&page=${page}&lang=${lang}`
-    const url = `/wp/v2/categories?${param}`;
-    return API.call(url);
-  },
   getPostDetail: async (slug: any) => {
     return API.call(`/wp/v2/posts?slug=${slug}`);
   },
-  getPostRelated: async (author: any, exclude: any) => {
-    return API.call(`/wp/v2/posts?per_page=3&page=1&author=${author}&lang=vi&exclude=${exclude}`);
+  getPostRelated: async (authorId: any, exclude: any) => {
+    return API.call(`/wp/v2/posts?per_page=3&page=1&author=${authorId}&lang=vi&exclude=${exclude}`);
   },
   getPostsByCategory: async ({per_page = 3, page = 1, categories = 1} = {}) => {
     const param = `per_page=${per_page}&page=${page}&categories=${categories}`;

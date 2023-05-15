@@ -7,7 +7,7 @@ type PropsType = {
   listPosts: PostType[],
 }
 
-const ArticlePopular: React.FC<PropsType> = ({ listPosts }) => {
+const ArticlePopular: React.FC<PropsType> = ({ listPosts}) => {
 
   return (
     <div className="popular-news section bg-white-blue">
@@ -20,12 +20,12 @@ const ArticlePopular: React.FC<PropsType> = ({ listPosts }) => {
             <div className={styles["popular-news__list--row"]}>
               {/* Popular news card */}
               <div className={styles["popular-news__list--card"]}>
-                <ArticleItem isStyleCard isShowCategoies isShowDesc post={listPosts[0]} />
+                <ArticleItem isStyleCard isShowCategoies isShowDesc post={listPosts[0]}/>
               </div>
               {/* End Popular news card */}
               {/* Popular news card */}
               <div className={styles["popular-news__list--card"]}>
-                <ArticleItem isStyleCard isShowCategoies isShowDesc post={listPosts[1]} />
+                <ArticleItem isStyleCard isShowCategoies isShowDesc post={listPosts[1]}/>
               </div>
               {/* End Popular news card */}
             </div>
@@ -34,7 +34,7 @@ const ArticlePopular: React.FC<PropsType> = ({ listPosts }) => {
             <div className={styles["popular-news__list--row"]}>
               {/* Popular news card */}
               <div className={styles["popular-news__list--card"]}>
-                <ArticleItem isStyleCard isStyleRow isShowDesc post={listPosts[2]} />
+                <ArticleItem isStyleCard isStyleRow isShowDesc post={listPosts[2]}/>
               </div>
               {/* End Popular news card */}
             </div>

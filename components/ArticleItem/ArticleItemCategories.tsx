@@ -1,11 +1,13 @@
 import { useGlobalState } from '@/state';
 import styles from './ArticleItem.module.css';
 import { PropsType } from './ArticleItem';
+
 import { Button } from '../shared/Button';
 import Link from 'next/link';
 
 // type PropsType = {
-//   categories: any
+//   // categoryId: any,
+//   categories: any,
 // }
 
 const ArticleItemCategories: React.FC<PropsType> = ({ post }) => {

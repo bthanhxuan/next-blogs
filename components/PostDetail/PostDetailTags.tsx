@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 function PostDetailTags({tags}: any) {
   const [categoriesList] = useGlobalState('categories');
+  // console.log(tags);
 
   return (
     <div className={styles["post-detail__tags"]}>

@@ -10,7 +10,7 @@ import { PostType } from '@/pages';
 import React from 'react';
 
 export type PropsType = {
-  post: PostType;
+  post: PostType,
 
   isStyleRow?: boolean,
   isStyleCard?: boolean,
@@ -33,16 +33,16 @@ const ArticleItem: React.FC<PropsType> = ({
 }) => {
   if (!post) return <></>;
 
-  const {
-    title,
-    featured_media_url,
-    author_data,
-    date,
-    authorAvatar,
-    excerpt,
-    slug,
-    categories,
-  } = post;
+  // const {
+  //   title,
+  //   featured_media_url,
+  //   author_data,
+  //   date,
+  //   authorAvatar,
+  //   excerpt,
+  //   slug,
+  //   categories,
+  // } = post;
 
   const classes = cls(styles['article-item'], {
     [styles['style-card']]: isStyleCard,

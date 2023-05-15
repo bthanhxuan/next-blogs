@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import { BASE_URL } from "@/constants";
 
 type ConfigType = {
-  data?: any,
+  data?: any | undefined,
   method?: string,
   token?: string,
 }
@@ -23,16 +23,16 @@ const API = {
       },
       body: JSON.stringify(data)
     }
-    return fetch(URL, config).then(res => res.json())
-    // return fetch(URL, config).then(res => {
-    //   return {
-    //     total: res.headers.get('x-wp-total'),
-    //     totalPage: res.headers.get('x-wp-totalpages'),
-    //     data: res.json()
-    //   }
-    // })
+    // return fetch(URL, config).then(res => res.json())
+    return fetch(URL, config).then(res => {
+      return {
+        total: res.headers.get('x-wp-total'),
+        totalPage: res.headers.get('x-wp-totalpages'),
+        data: res.json()
+      }
+    })
   },
-  callWithToken: async (url: string, {data, method = 'GET', token}: ConfigType = {}) => {
+  callWithToken: async (url: string, {data, method = 'GET', token}: ConfigType ) => {
     const URL = `${BASE_URL}${url}`;
     const config = {
       method,
@@ -53,7 +53,18 @@ const API = {
       body: data,
     }
     return fetch(URL, config).then(res => res.json())
-  }
+  },
+  callJson: async (url: string, data: any | undefined, method = 'GET') => {
+    const URL = `${BASE_URL}${url}`
+    const config = {
+      method,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    }
+    return fetch(URL, config).then(res => res.json())
+  },
 }
 
 export default API;

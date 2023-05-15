@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { InferGetServerSidePropsType } from 'next'
 import { GetServerSideProps } from 'next'
 import postService from "@/services/postService";
+import categoryService from "@/services/categoryService";
 
 export type PostType = {
   id: string,
@@ -51,9 +52,10 @@ export const getServerSideProps: GetServerSideProps<HomeDataProps> = async (cont
   const listPostsArticleLatest = postService.getArticlesLatest();
   const listPostsArticlePopular = postService.getArticlesPopular();
   const listPostsArticleGeneral = postService.getArticlesGeneral();
+  // const listCategory = categoryService.getCategories()
 
   const [dataPostsArticelLatestRes, dataPostsArticlePopularRes, dataPostsArticleGeneralRes]
-    = await Promise.all([listPostsArticleLatest, listPostsArticlePopular, listPostsArticleGeneral]);
+    = await Promise.all([(await listPostsArticleLatest).data, (await listPostsArticlePopular).data, (await listPostsArticleGeneral).data]);
 
   return {
     props: {

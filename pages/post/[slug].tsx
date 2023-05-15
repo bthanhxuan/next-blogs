@@ -2,30 +2,32 @@ import PostDetailContent from "@/components/PostDetail/PostDetailContent";
 import PostDetailHead from "@/components/PostDetail/PostDetailHead";
 import PostDetailSidebar from "@/components/PostDetail/PostDetailSidebar";
 import styles from '../../components/PostDetail/PostDetail.module.css';
-import { NextPage, NextPageContext } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { PostType } from "..";
 import postService from "@/services/postService";
 import commentService from "@/services/commentService";
 
-export type CommentType = {
-  id: string,
-  post: string,
-  author: string,
-  parent: any,
-  author_name: string,
-  date: string,
-  content: any,
-  author_data: any,
-  comment_reply_count: string | null,
-}
+type PostDetailProps = React.FC<InferGetServerSidePropsType<typeof getServerSideProps>>
 
-type PropsType = {
+// export type CommentType = {
+//   id: string,
+//   post: string,
+//   author: string,
+//   parent: any,
+//   author_name: string,
+//   date: string,
+//   content: any,
+//   author_data: any,
+//   comment_reply_count: string | null,
+// }
+
+type PostDetailPropsData = {
   postDetail: PostType[],
   postRelated: PostType[],
-  comments: CommentType[],
+  comments: any,
 }
 
-const PostDetailPage: NextPage<PropsType> = ({postDetail, postRelated, comments}) => {
+const PostDetailPage: PostDetailProps = ({postDetail, postRelated, comments}: PostDetailPropsData) => {
   return (
     <main className="post-detail">
       <div className="spacing" />
@@ -47,25 +49,34 @@ const PostDetailPage: NextPage<PropsType> = ({postDetail, postRelated, comments}
   );
 }
 
-PostDetailPage.getInitialProps = async (ctx: NextPageContext) => {
+export const getServerSideProps: GetServerSideProps<PostDetailPropsData> = async (context) => {
   // postDetail
-  const slugPost = ctx.query.slug as string;
+  const slugPost = context.query.slug as string;
   // console.log("slugPost ", slugPost);
-  const postDetailRes = await postService.getPostDetail(slugPost);
-  // console.log('postDetailRes', postDetailRes[0]?.id);
+  const postDetailPos = postService.getPostDetail(slugPost);
+  const [postDetailRes] = await Promise.all([(await postDetailPos).data]);
+  const author = postDetailRes[0].author;
+  const articleId = postDetailRes[0].id;
   
   // postRelated
-  const postRelatedRes = await postService.getPostRelated(postDetailRes[0]?.author, postDetailRes[0]?.id);
+  const postRelatedPos = postService.getPostRelated(author, articleId);
   // console.log('postRelatedRes ', postRelatedRes);
 
   // comments
-  const commentsRes = await commentService.getListComment(postDetailRes[0]?.id);
-  // console.log('commentsRes ', commentsRes);
+  const listComments = commentService.getListComment(articleId, 1, 0);
+  // console.log('listComments ', listComments);
+  const [postRelatedRes, listCommentsRes, listCommentsResHeaders] = await Promise.all([(await postRelatedPos).data, (await listComments).data, (await listComments).total])
 
   return {
-    postDetail: postDetailRes[0] || [],
-    postRelated: postRelatedRes || [],
-    comments: commentsRes || [],
+    props: {
+      postDetail: postDetailRes[0] || [],
+      postRelated: postRelatedRes || [],
+      comments: {
+        list: listCommentsRes,
+        totalComment: listCommentsResHeaders,
+        postId: articleId,
+      },
+    }
   }
 }
 
