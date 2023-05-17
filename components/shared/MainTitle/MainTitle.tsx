@@ -3,7 +3,7 @@ import { Button } from '../Button';
 import styles from './MainTitle.module.css';
 
 type MainTitleType = {
-  children?: string,
+  children?: any,
   btnLabel?: string,
   type?: string,
   btnProps?: Record<string, any>,
