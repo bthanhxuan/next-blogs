@@ -16,12 +16,9 @@ const SearchPage: NextPage<SearchPropsType> = ({ searchResult }) => {
 
   const router = useRouter();
   const keywordSearch = (router.query.keyword || '') as string;
-  const { list, keyword, totalPages, totalPosts} = searchResult;
-  const [listPosts, setListPosts] = useState(list);
-  const [currentPage, setCurrentPage] = useState(2);
-  const totalPage = Number(totalPages) + 1;
-
-  console.log(currentPage, totalPage);
+  const { keyword, totalPages, totalPosts} = searchResult;
+  const [listPosts, setListPosts] = useState(searchResult.list);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (!keywordSearch) {
@@ -32,10 +29,9 @@ const SearchPage: NextPage<SearchPropsType> = ({ searchResult }) => {
   const handleLoadMore = async (e: any) => {
     e.preventDefault()
     setCurrentPage(currentPage + 1);
-    const response = await postService.getPostSearch(keyword).then(res => {
+    const response = await postService.getPostSearch(keyword, currentPage + 1).then(res => {
       return res.data;
     })
-    if (currentPage === 1) return
     setListPosts(listPosts.concat(response));
   }
 
@@ -57,7 +53,7 @@ const SearchPage: NextPage<SearchPropsType> = ({ searchResult }) => {
         </div>
 
         <div className="text-center">
-          {currentPage === totalPage ? null : <Button type="primary" size="large" onClick={handleLoadMore}>
+          {currentPage < totalPages && <Button type="primary" size="large" onClick={handleLoadMore}>
             Tải thêm
           </Button>}
         </div>
@@ -74,7 +70,7 @@ SearchPage.getInitialProps = async (ctx: NextPageContext) => {
     searchResult: {
       list: listPostsRes,
       keyword,
-      totalPages,
+      totalPages: Number(totalPages),
       totalPosts: Number(totalPosts)
     },
   }

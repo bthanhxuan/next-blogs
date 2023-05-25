@@ -9,17 +9,11 @@ import commentService from "@/services/commentService";
 
 type PostDetailProps = React.FC<InferGetServerSidePropsType<typeof getServerSideProps>>
 
-// export type CommentType = {
-//   id: string,
-//   post: string,
-//   author: string,
-//   parent: any,
-//   author_name: string,
-//   date: string,
-//   content: any,
-//   author_data: any,
-//   comment_reply_count: string | null,
-// }
+type CommentType = {
+  list: any,
+  totalComment: number,
+  postId: number
+}
 
 type PostDetailPropsData = {
   postDetail: PostType[],
@@ -63,9 +57,10 @@ export const getServerSideProps: GetServerSideProps<PostDetailPropsData> = async
   // console.log('postRelatedRes ', postRelatedRes);
 
   // comments
-  const listComments = commentService.getListComment(articleId, 1, 0);
+  const listComments = commentService.getListComment(articleId);
   // console.log('listComments ', listComments);
-  const [postRelatedRes, listCommentsRes, listCommentsResHeaders] = await Promise.all([(await postRelatedPos).data, (await listComments).data, (await listComments).total])
+  const [postRelatedRes, listCommentsRes, listCommentsResHeaders] 
+    = await Promise.all([(await postRelatedPos).data, (await listComments).data, (await listComments).total]);
 
   return {
     props: {
@@ -73,7 +68,7 @@ export const getServerSideProps: GetServerSideProps<PostDetailPropsData> = async
       postRelated: postRelatedRes || [],
       comments: {
         list: listCommentsRes,
-        totalComment: listCommentsResHeaders,
+        totalComment: Number(listCommentsResHeaders),
         postId: articleId,
       },
     }

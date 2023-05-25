@@ -8,8 +8,8 @@ type AddNewCommentsType = {
 }
 
 const commentService =  {
-  getListComment: async (postId: any, page = 1, parent = 0) => {
-    const param = `per_page=5&page=${page}&post=${postId}&parent=${parent}&order=asc&exclude=[]`;
+  getListComment: async (postId: any, page = 1, parent = 0, exclude=[]) => {
+    const param = `per_page=5&page=${page}&post=${postId}&parent=${parent}&order=asc&exclude=${exclude.join()}`;
     const url = `/wp/v2/comments?${param}`;
     return API.call(url);
   },

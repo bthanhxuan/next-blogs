@@ -30,8 +30,8 @@ const postService = {
     const url = `/wp/v2/posts?${param}`;
     return API.call(url);
   },
-  getPostSearch: async (keyword: any) => {
-    return API.call(`/wp/v2/posts?per_page=2&page=1&search=${encodeURI(keyword)}&lang=vi`)
+  getPostSearch: async (keyword: any, page = 1) => {
+    return API.call(`/wp/v2/posts?per_page=2&page=${page}&search=${encodeURI(keyword)}&lang=vi`)
   },
   getPostDetail: async (slug: any) => {
     return API.call(`/wp/v2/posts?slug=${slug}`);

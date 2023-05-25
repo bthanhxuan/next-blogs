@@ -18,6 +18,7 @@ export default function CommentForm({parentId, isShow = true, token, user, post}
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [newComment, setNewComment] = useGlobalState('newComment');
+  const [commentExclude, setCommentExclude] = useGlobalState('commentExclude');
   const isThisParent = parentId === 0;
   const placeholder = isThisParent ? 'Viết bình luận...' : 'Viết phản hồi...';
   const btnLabel = isThisParent ? 'Bình luận' : 'Phản hồi';
@@ -46,8 +47,8 @@ export default function CommentForm({parentId, isShow = true, token, user, post}
 
     commentService.addComment(data, token)
       .then(res => {
-        const newArr = [...newComment, res]
-        setNewComment(newArr)
+        setNewComment(res);
+        setCommentExclude([...commentExclude, res.id]);
     }).then(() => {
       setContent('')
     })
@@ -61,7 +62,7 @@ export default function CommentForm({parentId, isShow = true, token, user, post}
             <img src="/assets/images/avatar1.jpg" alt="..." />
           </a>
         </div>
-        <textarea onChange={handleChangeValue} placeholder={placeholder} />
+        <textarea value={content} onChange={handleChangeValue} placeholder={placeholder} />
       </div>
       <div className={styles["text-right"]}>
         <Button type='default' onClick={handleSubmitComment} loading={loading} htmlType='submit'>

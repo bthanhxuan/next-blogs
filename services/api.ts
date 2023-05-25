@@ -37,6 +37,7 @@ const API = {
     const config = {
       method,
       headers: {
+        "Content-Type": "application/json",
         "Authorization": 'Bearer ' + token
       },
       body: JSON.stringify(data)

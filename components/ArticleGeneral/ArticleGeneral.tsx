@@ -8,52 +8,46 @@ import { BASE_URL } from '@/constants';
 
 type PropsType = {
   listPosts: PostType[],
+  totalPages?: number,
 }
 
 const ArticleGeneral: React.FC<PropsType> = (props) => {
-  const [listPosts, setListPosts] = useState<PostType[]>([])
+  const [listPosts, setListPosts] = useState(props.listPosts);
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false);
-  const [totalPages, setTotalPages] = useState(0);
-  // const [listPosts, setListPosts] = useState(props.listPosts);
+  const [totalPages, setTotalPages] = useState(props.totalPages || 0);
 
-  // function handleLoadmore() {
-  //   if (loading) return;
-  //   setLoading(true);
-  //   postService
-  //     .getArticlesGeneral({ per_page: 2, page: currPage + 1 })
-  //     .then(resData => {
-  //       const newPosts = resData || [];
-  //       setListPosts([
-  //         ...listPosts,
-  //         ...newPosts,
-  //       ])
-  //       setCurrPage(prev => prev + 1);
-  //     })
-  //     .finally(() => setLoading(false));
-  // }
+  // console.log('currPage', currentPage)
 
   const handleLoadMore = (e: any) => {
     if (loading) return
-    setLoading(true)
-    setCurrentPage(currentPage + 1)
+    setLoading(true);
+    setCurrentPage(currentPage + 1);
+    fetch(`${BASE_URL}/wp/v2/posts?per_page=2&page=${currentPage + 1}&lang=vi`)
+      .then(res=>{
+        return res.json()
+      })
+      .then(res => {
+        setLoading(false);
+        setListPosts(listPosts.concat(res));
+      })
   }
   
-  useEffect(() => {
-    fetch(`${BASE_URL}/wp/v2/posts?per_page=2&page=${currentPage}&lang=vi`)
-    .then(res => {
-      const totalpage = res.headers.get('x-wp-totalpages');
-      setTotalPages(Number(totalpage));
-      return res.json()
-    })
-    .then(res => {
-      if (currentPage === 1) {
-        setListPosts(res)
-      }
-      setLoading(false)
-      setListPosts(listPosts.concat(res))
-    })
-  }, [currentPage])
+  // useEffect(() => {
+  //   fetch(`${BASE_URL}/wp/v2/posts?per_page=2&page=${currentPage}&lang=vi`)
+  //   .then(res => {
+  //     const totalpage = res.headers.get('x-wp-totalpages');
+  //     setTotalPages(Number(totalpage));
+  //     return res.json()
+  //   })
+  //   .then(res => {
+  //     if (currentPage === 1) {
+  //       setListPosts(res)
+  //     }
+  //     setLoading(false)
+  //     setListPosts(listPosts.concat(res))
+  //   })
+  // }, [currentPage])
 
   return (
     <div className="articles-list section">
@@ -71,9 +65,9 @@ const ArticleGeneral: React.FC<PropsType> = (props) => {
         </div>
         {/* End Row News List */}
         <div className="text-center">
-          {currentPage < totalPages ? <Button type="primary" size="large" loading={loading} onClick={handleLoadMore}>
+          {currentPage < totalPages && <Button type="primary" size="large" loading={loading} onClick={handleLoadMore}>
             Tải thêm
-          </Button> : null }
+          </Button> }
         </div>
       </div>
     </div>

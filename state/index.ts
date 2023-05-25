@@ -31,6 +31,8 @@ type TypeInitState = {
   categories: CategoriesType[],
   currentUser: CurrentUserType | null,
   newComment?: any,
+  totalComment?: any,
+  commentExclude?: any,
 }
 
 const initialState: TypeInitState = {
@@ -38,7 +40,9 @@ const initialState: TypeInitState = {
   menus: [],
   categories: [],
   currentUser: null,
-  newComment: [],
+  newComment: null,
+  commentExclude: [],
+  totalComment: 0
 }
 
 const { useGlobalState } = createGlobalState(initialState);
