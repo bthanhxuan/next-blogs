@@ -33,6 +33,8 @@ type TypeInitState = {
   newComment?: any,
   totalComment?: any,
   commentExclude?: any,
+  newCommentChild?: any,
+  dataCommentChild?: any,
 }
 
 const initialState: TypeInitState = {
@@ -42,7 +44,9 @@ const initialState: TypeInitState = {
   currentUser: null,
   newComment: null,
   commentExclude: [],
-  totalComment: 0
+  totalComment: 0,
+  newCommentChild: {},
+  dataCommentChild: {},
 }
 
 const { useGlobalState } = createGlobalState(initialState);

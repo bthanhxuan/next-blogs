@@ -8,16 +8,17 @@ import commentService from '@/services/commentService';
 type Props = {
   parentId: any,
   isShow: boolean,
-  token: any,
-  user?: any,
   post?: any
 }
 
-export default function CommentForm({parentId, isShow = true, token, user, post}: Props) {
+export default function CommentForm({parentId, isShow = true, post}: Props) {
 
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [newComment, setNewComment] = useGlobalState('newComment');
+  const [dataCommentChild, setDataCommentChild] = useGlobalState('dataCommentChild');
+  const [token] = useGlobalState('token');
+  const [user] = useGlobalState('currentUser');
   const [commentExclude, setCommentExclude] = useGlobalState('commentExclude');
   const isThisParent = parentId === 0;
   const placeholder = isThisParent ? 'Viết bình luận...' : 'Viết phản hồi...';
@@ -39,7 +40,7 @@ export default function CommentForm({parentId, isShow = true, token, user, post}
   
   const handleSubmitComment = () => {
     const data = {
-      author: user.id,
+      author: user?.id,
       content,
       parent: parentId,
       post,
@@ -47,8 +48,16 @@ export default function CommentForm({parentId, isShow = true, token, user, post}
 
     commentService.addComment(data, token)
       .then(res => {
-        setNewComment(res);
-        setCommentExclude([...commentExclude, res.id]);
+        if(parentId === 0) {
+          setNewComment(res);
+          setCommentExclude([...commentExclude, res.id]);
+        } else {
+          setDataCommentChild({
+            ...dataCommentChild,
+            [parentId]: dataCommentChild[parentId] ? [res, ...dataCommentChild[parentId]] : [res],
+          });
+        }
+
     }).then(() => {
       setContent('')
     })

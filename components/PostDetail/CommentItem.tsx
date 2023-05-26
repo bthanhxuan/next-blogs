@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../shared/Button";
 import styles from "./Comments.module.css";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import viLocal from "dayjs/locale/vi";
-import { PostType } from "@/pages";
 import { useGlobalState } from "@/state";
 import { BASE_URL } from "@/constants";
 import CommentForm from "./CommentForm";
+import commentService from "@/services/commentService";
 
 dayjs.extend(relativeTime);
 
@@ -22,34 +22,53 @@ function CommentItem({ comment, parentId, postId }: Props) {
   // console.log('comment', comment, parentId);
   const [isShowForm, setIsShowForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [childComments, setChildComment] = useState<PostType[]>([]);
-  const [totalChildComment, setTotalChildComment] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [token] = useGlobalState("token");
+  const [dataCommentChild] = useGlobalState('dataCommentChild');
+  const listChildCmt = dataCommentChild[parentId] || [];
+  // const [childComments, setChildComment] = useState([...listChildCmt]);
 
-  let restTotal = totalChildComment - childComments.length;
+  let restTotal = (comment.comment_reply_count) - listChildCmt.length;
+  let totalPages = Math.round((comment.comment_reply_count) / currentPage);
 
-  // console.log(currentPage, totalPages);
 
-  const handleLoadMore = (evt: any) => {
+  // useEffect(()=>{
+  //   if(newChildComment) {
+  //     const newCmtChildList = [newChildComment, ...childComments];
+  //     setChildComment(newCmtChildList);
+  //   }
+  // }, [newChildComment])
+
+  console.log('id', comment.id);
+  console.log('listChildCmt', listChildCmt);
+
+  const handleLoadMore = async (evt: any) => {
     evt.preventDefault();
     setCurrentPage(currentPage + 1);
-    fetch(
-      `${BASE_URL}/wp/v2/comments?per_page=3&page=${currentPage === 0 ? '1' : currentPage}&post=${postId}&parent=${parentId}`
-    )
-      .then((res) => {
-        const totalCommentChild = res.headers.get("x-wp-total");
-        // console.log('totalCommentChild', totalCommentChild)
-        const totalPageCommentChild = res.headers.get("x-wp-totalpages");
-        // console.log('totalPageCommentChild', totalPageCommentChild)
-        setTotalChildComment(Number(totalCommentChild));
-        setTotalPages(Number(totalPageCommentChild) + 1);
-        return res.json();
-      })
-      .then((res) => {
-        console.log('res', res);
-        setChildComment(childComments.concat(res));
-      });
+
+    const response = await commentService.getListComment(postId, currentPage, parentId).then(res => {
+      return res.data;
+    });
+
+
+
+    // console.log('response', response);
+
+    // fetch(
+    //   `${BASE_URL}/wp/v2/comments?per_page=3&page=${currentPage === 0 ? '1' : currentPage}&post=${postId}&parent=${parentId}`
+    // )
+    //   .then((res) => {
+    //     const totalCommentChild = res.headers.get("x-wp-total");
+    //     // console.log('totalCommentChild', totalCommentChild)
+    //     const totalPageCommentChild = res.headers.get("x-wp-totalpages");
+    //     // console.log('totalPageCommentChild', totalPageCommentChild)
+    //     setTotalChildComment(Number(totalCommentChild));
+    //     setTotalPages(Number(totalPageCommentChild) + 1);
+    //     return res.json();
+    //   })
+    //   .then((res) => {
+    //     console.log('res', res);
+    //     setChildComment(childComments.concat(res));
+    //   });
   }
 
   function handleToggleCommentForm() {
@@ -84,9 +103,13 @@ function CommentItem({ comment, parentId, postId }: Props) {
           ></i>
         </div>
       </div>
+
+      {/* Reply form */}
+      <CommentForm isShow={isShowForm} parentId={parentId} post={postId}/>
+
       {/* Reply Comments */}
       <ul className={styles["comments"]}>
-        {childComments.map((comment) => (
+        {listChildCmt.map((comment: any) => (
           <CommentItem
             key={comment.id}
             comment={comment}
@@ -95,17 +118,15 @@ function CommentItem({ comment, parentId, postId }: Props) {
           />
         ))}
       </ul>
-      {/* Reply form */}
-      <CommentForm isShow={isShowForm} parentId={parentId} token={token} />
+      
       <div
         className={styles["comments__hidden"]}
         style={{ marginLeft: "20px" }}
       >
-        {totalPages === currentPage ||
-        comment.comment_reply_count === 0 ? null : (
+        {currentPage <= totalPages && (
           <a href="/" onClick={handleLoadMore}>
             <i className="icons ion-ios-undo" /> Xem thêm{" "}
-            {childComments.length > 0 ? restTotal : comment.comment_reply_count}{" "}
+            {listChildCmt.length > 0 ? restTotal : comment.comment_reply_count}{" "}
             câu trả lời
           </a>
         )}

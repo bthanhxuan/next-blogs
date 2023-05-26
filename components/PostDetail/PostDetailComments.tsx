@@ -50,7 +50,7 @@ const PostDetailComments: React.FC<PropsType> = ({ comments}) => {
 
   return (
     <div className={styles["post-detail__comments"]}>
-      <CommentForm isShow={true} parentId={0} token={token} user={user} post={postId}/>
+      <CommentForm isShow={true} parentId={0} post={postId}/>
       {commentsList.length > 0 ? <p>{totalComment} Bình luận</p> : <p>Bài viết chưa có bình luận</p>}
       {commentsList && commentsList.length > 0 && (
         <ul className={styles["comments"]}>
