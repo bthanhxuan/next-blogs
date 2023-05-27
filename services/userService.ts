@@ -27,7 +27,7 @@ const userService = {
     return API.callWithToken('/wp/v2/users/me' ,{token})
   },
   register : async (data: RegisterDataType) => {
-    return API.call('/wp/v2/users/register', {
+    return API.callOrg('/wp/v2/users/register', {
       data,
       method: 'POST',
     })

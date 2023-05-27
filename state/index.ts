@@ -31,9 +31,7 @@ type TypeInitState = {
   categories: CategoriesType[],
   currentUser: CurrentUserType | null,
   newComment?: any,
-  totalComment?: any,
   commentExclude?: any,
-  newCommentChild?: any,
   dataCommentChild?: any,
 }
 
@@ -44,8 +42,6 @@ const initialState: TypeInitState = {
   currentUser: null,
   newComment: null,
   commentExclude: [],
-  totalComment: 0,
-  newCommentChild: {},
   dataCommentChild: {},
 }
 

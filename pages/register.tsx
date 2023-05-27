@@ -60,6 +60,7 @@ function RegisterPage() {
     setLoading(true);
     userService.register(data)
       .then(res => {
+        // console.log('res', res);
         if (res.status === 201) {
           const body = JSON.stringify(formData);
           const method = "POST";

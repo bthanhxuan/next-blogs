@@ -48,13 +48,21 @@ export default function CommentForm({parentId, isShow = true, post}: Props) {
 
     commentService.addComment(data, token)
       .then(res => {
+        console.log('res', res)
+        setNewComment(res);
         if(parentId === 0) {
-          setNewComment(res);
           setCommentExclude([...commentExclude, res.id]);
         } else {
           setDataCommentChild({
             ...dataCommentChild,
-            [parentId]: dataCommentChild[parentId] ? [res, ...dataCommentChild[parentId]] : [res],
+            [parentId]: dataCommentChild[parentId] ? {
+              ...dataCommentChild[parentId],
+              list: dataCommentChild[parentId]?.list ? [res, ...dataCommentChild[parentId].list] : [res],
+              totalComment: dataCommentChild[parentId].totalComment + 1, 
+            } : {
+              list: [res],
+              totalComment: 1,
+            },
           });
         }
 

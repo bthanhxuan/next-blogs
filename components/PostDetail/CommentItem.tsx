@@ -23,52 +23,56 @@ function CommentItem({ comment, parentId, postId }: Props) {
   const [isShowForm, setIsShowForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [token] = useGlobalState("token");
-  const [dataCommentChild] = useGlobalState('dataCommentChild');
-  const listChildCmt = dataCommentChild[parentId] || [];
+  const [newComment, setNewComment] = useGlobalState('newComment');
+  const [dataCommentChild, setDataCommentChild] = useGlobalState('dataCommentChild');
+  const listChildCmt = dataCommentChild[comment.id]?.list || [];
   // const [childComments, setChildComment] = useState([...listChildCmt]);
-
-  let restTotal = (comment.comment_reply_count) - listChildCmt.length;
-  let totalPages = Math.round((comment.comment_reply_count) / currentPage);
-
-
-  // useEffect(()=>{
-  //   if(newChildComment) {
-  //     const newCmtChildList = [newChildComment, ...childComments];
-  //     setChildComment(newCmtChildList);
-  //   }
-  // }, [newChildComment])
+  const totalCmt = dataCommentChild[comment.id]?.totalComment || 1;
 
   console.log('id', comment.id);
-  console.log('listChildCmt', listChildCmt);
+  console.log('dataCommentChild', dataCommentChild);
+ 
+  let restTotal = totalCmt - listChildCmt.length;
+  let totalPages = Math.round((comment.comment_reply_count) / currentPage);
+
+  useEffect(() => {
+    console.log('useEffect run');
+    const newDataCmtChild = {
+      ...dataCommentChild, 
+      [comment.id]: {
+        list: [],
+        totalComment: Number(comment.comment_reply_count),
+      } 
+    };
+    console.log('newDataCmtChild', newDataCmtChild);
+    setDataCommentChild({
+      ...dataCommentChild, 
+      [comment.id]: {
+        list: [],
+        totalComment: Number(comment.comment_reply_count),
+      } 
+    });
+  }, []);
 
   const handleLoadMore = async (evt: any) => {
     evt.preventDefault();
     setCurrentPage(currentPage + 1);
 
-    const response = await commentService.getListComment(postId, currentPage, parentId).then(res => {
-      return res.data;
+    const response = await commentService.getListComment(postId, currentPage, comment.id).then(res => {
+      return res;
+    });
+    console.log('response', response);
+    const data = await response?.data.then(res =>{
+      return res;
     });
 
-
-
-    // console.log('response', response);
-
-    // fetch(
-    //   `${BASE_URL}/wp/v2/comments?per_page=3&page=${currentPage === 0 ? '1' : currentPage}&post=${postId}&parent=${parentId}`
-    // )
-    //   .then((res) => {
-    //     const totalCommentChild = res.headers.get("x-wp-total");
-    //     // console.log('totalCommentChild', totalCommentChild)
-    //     const totalPageCommentChild = res.headers.get("x-wp-totalpages");
-    //     // console.log('totalPageCommentChild', totalPageCommentChild)
-    //     setTotalChildComment(Number(totalCommentChild));
-    //     setTotalPages(Number(totalPageCommentChild) + 1);
-    //     return res.json();
-    //   })
-    //   .then((res) => {
-    //     console.log('res', res);
-    //     setChildComment(childComments.concat(res));
-    //   });
+    setDataCommentChild({
+      ...dataCommentChild, 
+      [comment.id]: {
+        list: dataCommentChild[comment.id]?.list ? [...dataCommentChild[comment.id].list, ...data] : [...data],
+        totalComment: Number(response.total),
+      } 
+    });
   }
 
   function handleToggleCommentForm() {
@@ -97,27 +101,31 @@ function CommentItem({ comment, parentId, postId }: Props) {
             className={styles["comments__section--text"]}
             dangerouslySetInnerHTML={{ __html: comment?.content?.rendered }}
           ></div>
-          <i
-            className={"ion-reply " + styles["comments__section--reply"]}
-            onClick={handleToggleCommentForm}
-          ></i>
+          {parentId === 0 && 
+            <i
+              className={"ion-reply " + styles["comments__section--reply"]}
+              onClick={handleToggleCommentForm}
+            ></i>
+          }
         </div>
       </div>
 
       {/* Reply form */}
-      <CommentForm isShow={isShowForm} parentId={parentId} post={postId}/>
+      <CommentForm isShow={isShowForm} parentId={comment.id} post={postId}/>
 
       {/* Reply Comments */}
-      <ul className={styles["comments"]}>
-        {listChildCmt.map((comment: any) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            parentId={parentId}
-            postId={postId}
-          />
-        ))}
-      </ul>
+      {listChildCmt.length > 0 && 
+        <ul className={styles["comments"]}>
+          {listChildCmt.map((comment: any) => (
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              parentId={comment.id}
+              postId={postId}
+            />
+          ))}
+        </ul>
+      }
       
       <div
         className={styles["comments__hidden"]}

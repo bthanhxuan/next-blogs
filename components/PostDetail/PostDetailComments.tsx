@@ -57,7 +57,7 @@ const PostDetailComments: React.FC<PropsType> = ({ comments}) => {
           {
             commentsList.map((comment : any) => {
               return (
-                <CommentItem key={comment.id} comment={comment} parentId={comment.id} postId={postId}/>
+                <CommentItem key={comment.id} comment={comment} parentId={0} postId={postId}/>
               )
             })
           }
